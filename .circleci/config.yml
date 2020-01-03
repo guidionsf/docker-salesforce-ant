@@ -63,12 +63,12 @@ workflows:
           filters:
             branches:
               only: master
-          context: org-global
+          context: Org-00D0Y000000a7Ox-merge
 
       - test_image:
           filters:
             branches:
               only: master
-          context: org-global
+          context: Org-00D0Y000000a7Ox-merge
           requires:
             - build

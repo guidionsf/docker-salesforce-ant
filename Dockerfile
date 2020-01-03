@@ -11,5 +11,6 @@ RUN SF_LIB_DIRECTORY=$HOME/.salesforce \
   && wget -q "https://gs0.salesforce.com/dwnld/SfdcAnt/salesforce_ant_41.0.zip" -O $SF_TEMP_DIR/ant.zip \
   && unzip -d $SF_TEMP_DIR/ant $SF_TEMP_DIR/ant.zip \
   && cp $SF_TEMP_DIR/ant/ant-salesforce.jar $SF_LIB_DIRECTORY/ant-salesforce.jar \
-  && cp -f $SF_TEMP_DIR/ant/ant-salesforce.jar $ANT_HOME/lib/ant-salesforce.jar \
+  && chmod -R 777 $ANT_HOME \
+  && cp $SF_TEMP_DIR/ant/ant-salesforce.jar $ANT_HOME/lib/ant-salesforce.jar \
   && rm -rf $SF_TEMP_DIR

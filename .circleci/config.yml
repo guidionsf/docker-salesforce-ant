@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: ubuntu:18.04
+      - image: circleci/node:10
     steps:
       - checkout
       - setup_remote_docker
@@ -11,7 +11,7 @@ jobs:
           name: Install Docker client
           command: |
             set -x
-            VER="19.03.5-ce"
+            VER="18.06.1-ce"
             sudo curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
             sudo tar -xz -C /tmp -f /tmp/docker-$VER.tgz
             sudo mv /tmp/docker/* /usr/bin

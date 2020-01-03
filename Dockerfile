@@ -1,6 +1,6 @@
 FROM circleci/openjdk:11
 
-RUN apt-get install -y ant
+RUN sudo apt-get install -y ant
 
 RUN SF_LIB_DIRECTORY=$HOME/.salesforce \
   && SF_TEMP_DIR=$HOME/.tmp/salesforce \

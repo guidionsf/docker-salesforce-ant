@@ -1,12 +1,9 @@
 
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
       - image: ubuntu:18.04
-    branches:
-      only:
-        - master
     steps:
       - checkout
       - setup_remote_docker
@@ -24,4 +21,6 @@ jobs:
           name: Build & Push
           command: |
             docker build -t $DOCKER_USERNAME/docker-salesforce-ant:latest .
-            docker push $DOCKER_USERNAME/docker-salesforce-ant:latest
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              docker push $DOCKER_USERNAME/docker-salesforce-ant:latest
+            fi

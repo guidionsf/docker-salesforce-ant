@@ -1,38 +1,27 @@
-image_config: &image_config
-
-  # make sure to set your Docker Hub username & password in CircleCI,
-  # either as project-specific environment variables
-  # or as resources in your organization's org-global Context
-
-  IMAGE_NAME: docker-salesforce-ant
-
-  IMAGE_TAG: docker-salesforce-ant
 
 version: 2
 jobs:
   build:
-    machine: true
-    environment:
-      <<: *image_config
-
+    docker:
+      - image: ubuntu:18.04
+    branches:
+      only:
+        - master
     steps:
       - checkout
+      - setup_remote_docker
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="19.03.5-ce"
+            sudo curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+            sudo tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            sudo mv /tmp/docker/* /usr/bin
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-      - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-
-      - run: docker build -t $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG .
-
-      - run: docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG && sleep 10
-
-      - store_artifacts:
-          path: Dockerfile
-
-workflows:
-  version: 2
-  dockerfile_wizard:
-    jobs:
-      - build:
-          filters:
-            branches:
-              only: master
-          context: Org-00D0Y000000a7Ox-merge
+      - deploy: 
+          name: Build & Push
+          command: |
+            docker build -t $DOCKER_USERNAME/docker-salesforce-ant:latest .
+            docker push $DOCKER_USERNAME/docker-salesforce-ant:latest

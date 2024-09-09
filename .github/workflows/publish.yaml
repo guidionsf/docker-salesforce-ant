@@ -1,20 +1,17 @@
 #
 name: Demo Push
 
-# This workflow runs when any of the following occur:
-# - A push is made to a branch called `master`
-# - A tag is created
 on:
   push:
     branches:
       - master
     tags:
-      - .*
+    - '*'
+
 env:
   IMAGE_NAME: salesforce-ant
-#
+
 jobs:
-  # This pushes the image to GitHub Packages.
   push:
     runs-on: ubuntu-latest
     permissions:
